@@ -1,0 +1,26 @@
+{
+  "name": "api-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rastamanby/api-cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rastamanby/api-cli/issues"
+  },
+  "homepage": "https://github.com/Rastamanby/api-cli#readme",
+  "dependencies": {
+    "commander": "^2.15.1",
+    "ejs": "^2.6.1",
+    "inquirer": "^5.2.0"
+  },
+  "preferGlobal": true,
+  "bin": "./index.js"
+}
