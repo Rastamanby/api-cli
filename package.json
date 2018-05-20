@@ -19,7 +19,8 @@
   "dependencies": {
     "commander": "^2.15.1",
     "ejs": "^2.6.1",
-    "inquirer": "^5.2.0"
+    "inquirer": "^5.2.0",
+    "inquirer-recursive": "0.0.5"
   },
   "preferGlobal": true,
   "bin": "./index.js"

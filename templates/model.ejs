@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const <%= name %>Schema = new Schema({
-  // fields
+<% if(createSchema) { fields.forEach(function(field){ -%>
+  <%= field.fieldName %>: { type: <%= field.fieldType %>, required: <%= field.fieldRequired %> },
+<% })} -%>
 })
 
 module.exports = mongoose.model('<%= name.toLowerCase() %>', <%= name %>Schema)

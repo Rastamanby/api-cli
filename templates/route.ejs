@@ -1,13 +1,16 @@
 const mongoose = require('mongoose')
 const <%= name %> = require('../models/<%= name.toLowerCase() %>')
 
+<% if (methods.GET) { %>
 const get<%= name %>s = (req, res) => {
   const query = <%= name %>.find({})
   query.exec((err, <%= name.toLowerCase() %>s) => (
     err ? res.send(err) : res.json(<%= name.toLowerCase() %>s)
   ))
 }
+<% } %>
 
+<% if (methods.POST) { %>
 const post<%= name %> = (req, res) => {
   const new<%= name %> = new <%= name %>(req.body)
   new<%= name %>.save((err, <%= name.toLowerCase() %>) => (
@@ -17,7 +20,9 @@ const post<%= name %> = (req, res) => {
     })
   ))
 }
+<% } %>
 
+<% if (methods.PUT) { %>
 const put<%= name %> = (req, res) => {
   <%= name %>.findById({ _id: req.params.<%= name.toLowerCase() %>Id }, (err, <%= name.toLowerCase() %>) => {
     if (err) res.send(err)
@@ -29,5 +34,14 @@ const put<%= name %> = (req, res) => {
     ))
   })
 }
+<% } %>
 
-module.exports = { get<%= name %>s, post<%= name %>, put<%= name %> }
+<% if (methods.DELETE) { %>
+// create DELETE method
+<% } %>
+
+module.exports = {
+  <%- if (methods.GET) { %>get<%= name %>s,<% } -%>
+  <%- if (methods.POST) { %>post<%= name %>,<% } -%>
+  <%- if (methods.PUT) { %>put<%= name %> <% } -%>
+}

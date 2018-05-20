@@ -18,7 +18,7 @@ describe('<%= name %>s', () => {
          done();         
       });     
   });
-
+  <% if (methods.GET) { %>
   describe('/GET <%= name.toLowerCase() %>', () => {
       it('it should GET all the <%= name.toLowerCase() %>s', (done) => {
         chai.request(server)
@@ -34,7 +34,8 @@ describe('<%= name %>s', () => {
             });
       });
   });
-
+  <% } %>
+  <% if (methods.POST) { %>
   describe('/POST <%= name.toLowerCase() %>', () => {
     it('it should return error with no required data', (done) => {
       const <%= name.toLowerCase() %> = {
@@ -67,7 +68,8 @@ describe('<%= name %>s', () => {
         })
     })
   })
-
+  <% } %>
+  <% if (methods.PUT) { %>
   describe('/PUT <%= name.toLowerCase() %>', () => {
     it('it should succesfully update sort of <%= name.toLowerCase() %>', (done) => {
       const <%= name.toLowerCase() %> = new <%= name %>({
@@ -92,4 +94,5 @@ describe('<%= name %>s', () => {
       })
     })
   })
+  <% } %>
 })

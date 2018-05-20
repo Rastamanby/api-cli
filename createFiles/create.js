@@ -4,9 +4,10 @@ const path = require('path');
 const rootDir = path.dirname(require.main.filename);
 const appDir = process.cwd()
 
-const create = (type, name, next) => {
+const create = (type, answers, next) => {
+  const { name } = answers
   const template = fs.readFileSync(`${rootDir}/templates/${type.toLowerCase()}.ejs`, 'utf8')
-  const rendered = ejs.render(template, { name })
+  const rendered = ejs.render(template, answers)
   let filePath = ''
   switch (type) {
     case 'Model':
@@ -22,8 +23,8 @@ const create = (type, name, next) => {
     default:
       break;
   }
-  return fs.appendFileSync(`${filePath}${name.toLowerCase()}.js`, rendered, (err) => (
-    err ? console.log(err) : next()
+  fs.appendFileSync(`${filePath}${name.toLowerCase()}.js`, rendered, (err) => (
+    next()
   ))
 }
 

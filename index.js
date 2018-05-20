@@ -2,39 +2,70 @@
 'use strict'
 
 const program = require('commander')
-const { prompt } = require('inquirer')
+const { prompt, registerPrompt } = require('inquirer')
 const { exec } = require('child_process')
 const fs = require('fs')
 const ejs = require('ejs')
 
 const create = require('./createFiles/create')
-
+registerPrompt('recursive', require('inquirer-recursive'))
 const questions = [
   {
     type : 'input',
     name : 'name',
-    message : 'Name of file'
+    message : 'Name of entity'
   },
   {
     type : 'checkbox',
-    name : 'components',
-    message : 'Check components what you want to create',
+    name : 'methods',
+    message : 'What methods do you want to add in route?',
     choices: [
-      'Route',
-      'Model',
-      'Test'
+      'GET',
+      'POST',
+      'PUT',
+      'DELETE'
     ]
   },
-  // {
-  //   type : 'input',
-  //   name : 'phone',
-  //   message : 'Enter phone number ...'
-  // },
-  // {
-  //   type : 'input',
-  //   name : 'email',
-  //   message : 'Enter email address ...'
-  // }
+  {
+    type : 'confirm',
+    name : 'createSchema',
+    message : 'Do you want to create schema for this entity?',
+  },
+  {
+    when: ({ createSchema }) => (createSchema),
+    type : 'recursive',
+    name : 'fields',
+    message : 'Create field?',
+    prompts: [
+      {
+        type: 'input',
+        name: 'fieldName',
+        message: 'Fieldname: '
+      },
+      {
+        type: 'list',
+        name: 'fieldType',
+        message: 'Select type of field',
+        choices: [
+          'String',
+          'Number',
+          'Date',
+          'Buffer',
+          'Boolean',
+          'Mixed',
+          'ObjectId',
+          'Array',
+          'Decimal128',
+          'Map'
+        ]
+      },
+      {
+        type: 'confirm',
+        name: 'fieldRequired',
+        message: 'Is this field required?'
+      }
+    ]
+  },
 ];
 
 program
@@ -46,10 +77,15 @@ program
   .alias('cf')
   .description('create file')
   .action(() => {
-    prompt(questions).then(({ name }) => {
-      create('Model', name, () => (console.log('Model created')))
-      create('Route', name, () => (console.log('Route created')))
-      create('Test', name, () => (console.log('Test created')))
+    prompt(questions).then(({ methods, ...answers}) => {
+      const reducedMethods = methods.reduce((prev, current) => ({
+        ...prev,
+        [current]: true
+      }), {})
+      console.log(answers)
+      create('Model', { ...answers }, () => (console.log('Model created')))
+      create('Route', { ...answers, methods: reducedMethods }, () => (console.log('Route created')))
+      create('Test', { ...answers, methods: reducedMethods }, () => (console.log('Test created')))
     })
   })
 
