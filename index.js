@@ -82,8 +82,7 @@ program
         ...prev,
         [current]: true
       }), {})
-      console.log(answers)
-      create('Model', { ...answers }, () => (console.log('Model created')))
+      create('Model', { ...answers, methods: reducedMethods }, () => (console.log('Model created')))
       create('Route', { ...answers, methods: reducedMethods }, () => (console.log('Route created')))
       create('Test', { ...answers, methods: reducedMethods }, () => (console.log('Test created')))
     })

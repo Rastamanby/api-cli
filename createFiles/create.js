@@ -6,6 +6,7 @@ const appDir = process.cwd()
 
 const create = (type, answers, next) => {
   const { name } = answers
+  console.log(answers)
   const template = fs.readFileSync(`${rootDir}/templates/${type.toLowerCase()}.ejs`, 'utf8')
   const rendered = ejs.render(template, answers)
   let filePath = ''

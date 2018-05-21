@@ -1,41 +1,39 @@
-process.env.NODE_ENV = 'test';
+/* eslint-disable no-undef */
+process.env.NODE_ENV = 'test'
 
-const mongoose = require('mongoose');
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const assert = require('chai').assert
+const server = require('../index')
+
 const <%= name %> = require('../controllers/models/<%= name.toLowerCase() %>')
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = require('../index');
-const should = require('chai').should
-const expect = require('chai').expect
-const assert = require('chai').assert
-
-chai.use(chaiHttp);
+chai.use(chaiHttp)
 
 describe('<%= name %>s', () => {
   beforeEach((done) => {
-      <%= name %>.remove({}, (err) => { 
-         done();         
-      });     
-  });
-  <% if (methods.GET) { %>
+    <%= name %>.remove({}, (err) => { 
+      done()         
+    })     
+  })
+  <% if(methods.GET) { %>
   describe('/GET <%= name.toLowerCase() %>', () => {
-      it('it should GET all the <%= name.toLowerCase() %>s', (done) => {
-        chai.request(server)
-            .get('/<%= name.toLowerCase() %>')
-            .end((err, res) => {
-                // assert.isObject(res)
-                // assert.nestedProperty(res, 'status')
-                // assert.nestedPropertyVal(res, 'status', 200)
-                // assert.nestedProperty(res, 'body')
-                // assert.isArray(res.body)
-                // assert.lengthOf(res.body, 0)
-              done();
-            });
-      });
-  });
+    it('it should GET all the <%= name.toLowerCase() %>s', (done) => {
+      chai.request(server)
+        .get('/<%= name.toLowerCase() %>')
+        .end((err, res) => {
+          // assert.isObject(res)
+          // assert.nestedProperty(res, 'status')
+          // assert.nestedPropertyVal(res, 'status', 200)
+          // assert.nestedProperty(res, 'body')
+          // assert.isArray(res.body)
+          // assert.lengthOf(res.body, 0)
+          done()
+        })
+    })
+  })
   <% } %>
-  <% if (methods.POST) { %>
+  <% if(methods.POST) { %>
   describe('/POST <%= name.toLowerCase() %>', () => {
     it('it should return error with no required data', (done) => {
       const <%= name.toLowerCase() %> = {
@@ -49,9 +47,9 @@ describe('<%= name %>s', () => {
           // assert.isObject(res)
           // assert.nestedProperty(res, 'body.errors.sku.kind')
           // assert.nestedPropertyVal(res, 'body.errors.sku.kind', 'required')
-          done();
-        });
-    });
+          done()
+        })
+    })
     it('it should succesful add <%= name.toLowerCase() %> and return message', (done) => {
       const <%= name.toLowerCase() %> = {
         // example of data
@@ -69,7 +67,7 @@ describe('<%= name %>s', () => {
     })
   })
   <% } %>
-  <% if (methods.PUT) { %>
+  <% if(methods.PUT) { %>
   describe('/PUT <%= name.toLowerCase() %>', () => {
     it('it should succesfully update sort of <%= name.toLowerCase() %>', (done) => {
       const <%= name.toLowerCase() %> = new <%= name %>({
@@ -89,6 +87,36 @@ describe('<%= name %>s', () => {
             // assert.isObject(res.body)
             // assert.nestedPropertyVal(res, 'body.message', '<%= name %> updated!')
             // assert.nestedPropertyVal(res, 'body.<%= name.toLowerCase() %>.sort', 0)
+            done()
+          })
+      })
+    })
+  })
+  <% } %>
+  <% if(methods.DELETE) { %>
+  describe('/DELETE <%= name.toLowerCase() %>', () => {
+    it('it delete one <%= name.toLowerCase() %>', (done) => {
+      const <%= name.toLowerCase() %> = new <%= name %>({
+        // example right data
+      })
+      <%= name.toLowerCase() %>.save((err, <%= name.toLowerCase() %>) => {
+        chai.request(server)
+          .delete(`/<%= name.toLowerCase() %>/${<%= name.toLowerCase() %>.id}`)
+          .end((err, res) => {
+            // write asserts here for remove all items
+            done()
+          })
+      })
+    })
+    it('it delete all <%= name.toLowerCase() %>s', (done) => {
+      const <%= name.toLowerCase() %> = new <%= name %>({
+        // write example of data
+      })
+      <%= name.toLowerCase() %>.save(() => {
+        chai.request(server)
+          .delete('/<%= name.toLowerCase() %>')
+          .end((err, res) => {
+            // write asserts here for remove one item
             done()
           })
       })
